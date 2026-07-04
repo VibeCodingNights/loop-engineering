@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Task Hypergraph — {{PROJECT}}</title>
+
+<!-- ─────────────────────────────────────────────────────────────────────────
+     CONFIG (machine-readable; parsed by validate.py / frontier.py / scaffold).
+     This file is the AUTHORITATIVE topology AND its own rendered view.
+     ───────────────────────────────────────────────────────────────────────── -->
+<meta name="th:project"        content="{{PROJECT}}">
+<meta name="th:arc"            content="{{ARC}}">
+<meta name="th:created"        content="{{CREATED}}">
+<meta name="th:format"         content="html">
+<meta name="th:autostart"      content="{{AUTOSTART}}">
+<meta name="th:frontier-mode"  content="{{FRONTIER_MODE}}">
+<meta name="th:review-persona" content="{{REVIEW_PERSONA}}">
+<meta name="th:review-skeptics" content="{{REVIEW_SKEPTICS}}">
+<meta name="th:autonomy"       content="{{AUTONOMY}}">
+<meta name="th:executor"       content="{{EXECUTOR}}">
+<meta name="th:codex-model"    content="{{CODEX_MODEL}}">
+<meta name="th:max-parallel"   content="{{MAX_PARALLEL}}">
+<meta name="th:goal-budget"    content="{{GOAL_BUDGET}}">
+
+<!-- ─────────────────────────────────────────────────────────────────────────
+     NODE / HYPEREDGE SCHEMA (the machine contract — keep these data-* exact):
+
+     <article class="node" id="<ID>"
+              data-status="todo|doing|done|blocked|killed|gate_fail"
+              data-type="map|do|review|impl|test|refactor|research|doc|infra|fix"
+              data-track="<lane>"
+              data-deps="<space-separated upstream ids>"
+              data-blocks="<space-separated downstream ids>"
+              data-files="<space-separated paths this node writes>"
+              data-isolate="true|false"          (worktree-isolate shared-file writer)
+              data-risk="low|med|high"
+              data-gate="golden-diff|intentional-diff|test-green|forgeability"
+              data-verify="<runnable command>"
+              data-spec="nodes/<ID>.md">         (prose spec lives here)
+       <h3>&lt;ID&gt; — &lt;title&gt;</h3>
+       <p class="objective">&lt;one-line objective for the render&gt;</p>
+     </article>
+
+     <div class="hyperedge" data-id="<ID>" data-kind="fanout|join|gate|enables"
+          data-members="<space-separated ids>"
+          data-deps="<ids>" data-blocks="<ids>"></div>
+
+     Id lists are SPACE-separated — no quotes, no brackets, no commas.
+     The orchestrator (single-spawner) owns edits to this file; parallel
+     workers edit their own nodes/<ID>.md + code, never this file.
+     ───────────────────────────────────────────────────────────────────────── -->
+
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --edge:#30363d; --ink:#e6edf3; --muted:#8b949e;
+    --todo:#6e7681; --doing:#388bfd; --done:#3fb950; --blocked:#d29922;
+    --killed:#f85149; --gate_fail:#db61a2; --accent:#58a6ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  header{padding:14px 20px;border-bottom:1px solid var(--edge);
+         display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+  header h1{font-size:16px;margin:0;font-weight:600}
+  header .meta{color:var(--muted);font-size:12px}
+  header .meta b{color:var(--ink);font-weight:600}
+  .legend{display:flex;gap:12px;margin-left:auto;font-size:12px;flex-wrap:wrap}
+  .legend span{display:inline-flex;align-items:center;gap:5px;color:var(--muted)}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+  #stage{position:relative;width:100%;overflow:auto}
+  svg#edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  #waves{display:flex;gap:54px;padding:28px 24px;align-items:flex-start;min-height:60vh}
+  .wave{display:flex;flex-direction:column;gap:18px;min-width:210px}
+  .wave-label{color:var(--muted);font-size:11px;letter-spacing:.08em;
+              text-transform:uppercase;text-align:center;margin-bottom:2px}
+  .card{position:relative;background:var(--panel);border:1px solid var(--edge);
+        border-left:4px solid var(--todo);border-radius:8px;padding:10px 12px;
+        text-decoration:none;color:inherit;display:block;transition:.12s;cursor:pointer}
+  .card:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .card .id{font-weight:700;font-size:13px}
+  .card .title{color:var(--muted);font-size:12px;margin-left:6px}
+  .card .obj{font-size:12px;color:var(--ink);opacity:.82;margin-top:5px}
+  .card .badges{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
+  .badge{font-size:10px;padding:1px 6px;border-radius:999px;background:#21262d;color:var(--muted)}
+  .badge.iso{color:var(--killed);border:1px solid var(--killed)}
+  .card[data-status="todo"]{border-left-color:var(--todo)}
+  .card[data-status="doing"]{border-left-color:var(--doing)}
+  .card[data-status="done"]{border-left-color:var(--done)}
+  .card[data-status="blocked"]{border-left-color:var(--blocked)}
+  .card[data-status="killed"]{border-left-color:var(--killed);opacity:.55}
+  .card[data-status="gate_fail"]{border-left-color:var(--gate_fail)}
+  .empty{color:var(--muted);padding:40px 24px}
+  .hidden-data{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>⬡ {{PROJECT}}</h1>
+  <span class="meta">arc <b>{{ARC}}</b> · <b id="m-count">0</b> nodes · autostart <b>{{AUTOSTART}}</b></span>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--todo)"></i>todo</span>
+    <span><i class="dot" style="background:var(--doing)"></i>doing</span>
+    <span><i class="dot" style="background:var(--done)"></i>done</span>
+    <span><i class="dot" style="background:var(--blocked)"></i>blocked</span>
+    <span><i class="dot" style="background:var(--killed)"></i>killed</span>
+    <span><i class="dot" style="background:var(--gate_fail)"></i>gate-fail</span>
+  </div>
+</header>
+
+<div id="stage">
+  <svg id="edges"></svg>
+  <div id="waves"><div class="empty">Empty topology — no nodes yet. The build phase fills <code>&lt;main id="graph"&gt;</code> below.</div></div>
+</div>
+
+<!-- ── MACHINE-READABLE GRAPH (authoritative; render reads from here) ──────────
+     Build phase appends one <article class="node"> per task unit, and one
+     <div class="hyperedge"> per hyperedge, inside #graph. -->
+<main id="graph" class="hidden-data">
+  <!-- nodes:start -->
+  <!-- nodes:end -->
+  <section id="hyperedges">
+    <!-- hyperedges:start -->
+    <!-- hyperedges:end -->
+  </section>
+</main>
+
+<script>
+/* Self-rendering: lay the #graph nodes out as a wave-columned DAG with SVG
+   dependency edges, colored by status. Pure vanilla JS, no network, no deps. */
+(function () {
+  const nodesEls = [...document.querySelectorAll('#graph article.node')];
+  document.getElementById('m-count').textContent = nodesEls.length;
+  if (!nodesEls.length) return;
+
+  const ids = (s) => (s || '').trim().split(/\s+/).filter(Boolean);
+  const N = new Map();
+  for (const el of nodesEls) {
+    N.set(el.id, {
+      id: el.id,
+      status: el.dataset.status || 'todo',
+      deps: ids(el.dataset.deps),
+      isolate: (el.dataset.isolate || 'false') === 'true',
+      gate: el.dataset.gate || '',
+      track: el.dataset.track || '',
+      spec: el.dataset.spec || '',
+      title: (el.querySelector('h3')?.textContent || el.id).replace(/^.*?—\s*/, ''),
+      obj: el.querySelector('.objective')?.textContent || '',
+    });
+  }
+  // Kahn layering -> wave (column) per node.
+  const indeg = new Map([...N.keys()].map(k => [k, 0]));
+  for (const n of N.values()) for (const d of n.deps) if (N.has(d)) indeg.set(n.id, indeg.get(n.id) + 1);
+  const layer = new Map();
+  let frontier = [...N.keys()].filter(k => indeg.get(k) === 0);
+  let w = 0;
+  const seen = new Set();
+  while (frontier.length) {
+    const next = [];
+    for (const id of frontier) { layer.set(id, w); seen.add(id); }
+    for (const n of N.values()) {
+      if (seen.has(n.id)) continue;
+      if (n.deps.every(d => !N.has(d) || seen.has(d))) next.push(n.id);
+    }
+    frontier = next.filter(id => !seen.has(id));
+    w++;
+    if (w > N.size + 1) break; // cycle guard
+  }
+  for (const k of N.keys()) if (!layer.has(k)) layer.set(k, w); // cycle remnants
+
+  const maxW = Math.max(0, ...[...layer.values()]);
+  const wavesEl = document.getElementById('waves');
+  wavesEl.innerHTML = '';
+  const cardOf = new Map();
+  for (let i = 0; i <= maxW; i++) {
+    const col = document.createElement('div');
+    col.className = 'wave';
+    const lbl = document.createElement('div');
+    lbl.className = 'wave-label';
+    lbl.textContent = 'W' + i;
+    col.appendChild(lbl);
+    for (const n of N.values()) {
+      if (layer.get(n.id) !== i) continue;
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.dataset.status = n.status;
+      if (n.spec) a.href = n.spec;
+      a.innerHTML =
+        `<div><span class="id">${n.id}</span><span class="title">${n.title}</span></div>` +
+        (n.obj ? `<div class="obj">${n.obj}</div>` : '') +
+        `<div class="badges"><span class="badge">${n.status}</span>` +
+        (n.track ? `<span class="badge">${n.track}</span>` : '') +
+        (n.gate ? `<span class="badge">${n.gate}</span>` : '') +
+        (n.isolate ? `<span class="badge iso">⌗ isolate</span>` : '') + `</div>`;
+      col.appendChild(a);
+      cardOf.set(n.id, a);
+    }
+    wavesEl.appendChild(col);
+  }
+
+  // Draw dependency edges (dep -> node) as SVG curves once layout settles.
+  const svg = document.getElementById('edges');
+  function draw() {
+    const stage = document.getElementById('stage').getBoundingClientRect();
+    svg.setAttribute('width', document.getElementById('waves').scrollWidth);
+    svg.setAttribute('height', document.getElementById('waves').scrollHeight);
+    let p = '';
+    for (const n of N.values()) {
+      const to = cardOf.get(n.id); if (!to) continue;
+      const tb = to.getBoundingClientRect();
+      for (const d of n.deps) {
+        const from = cardOf.get(d); if (!from) continue;
+        const fb = from.getBoundingClientRect();
+        const x1 = fb.right - stage.left, y1 = fb.top + fb.height / 2 - stage.top;
+        const x2 = tb.left - stage.left, y2 = tb.top + tb.height / 2 - stage.top;
+        const mx = (x1 + x2) / 2;
+        p += `<path d="M${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}" `
+           + `fill="none" stroke="var(--edge)" stroke-width="1.5"/>`;
+      }
+    }
+    svg.innerHTML = p;
+  }
+  draw();
+  window.addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>

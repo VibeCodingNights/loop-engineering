@@ -1,0 +1,23 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor droppings
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Secrets — never commit keys
+.env
+.env.*
+
+# Dependencies and caches
+node_modules/
+__pycache__/
+*.pyc
+
+# Journal drafts — commit journal/entries/your-name.md, not scratch files
+*.draft.md
+journal/entries/*.tmp
