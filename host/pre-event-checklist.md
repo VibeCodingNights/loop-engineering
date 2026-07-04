@@ -11,7 +11,7 @@ Everything here is done before doors at 6:00 PM. Budget an hour; the preflight a
 - [ ] Verify the task-hypergraph scaffold works: `bash hypergraph/scripts/scaffold.sh --project test --mode tmpdir`
 - [ ] Pre-stage `verifiers/templates/` — every script in it must be working and copy-paste-ready; run each one once
 - [ ] Post Wi-Fi credentials and the repo URL on a wall-mounted screen or whiteboard — visible from every seat
-- [ ] Set up the shared channel (Discord thread or Telegram group) for the night — loop journals get posted here tonight, overnight results get posted here at breakfast. Have `breakfast-prompt.md` queued for the morning
+- [ ] Set up the shared channel (Discord thread or Telegram group) for the night — loops get posted here tonight (goal, verifier, cost cap, repo URL), overnight results get posted here at breakfast. Have `breakfast-prompt.md` queued for the morning
 
 ## Demo prep
 

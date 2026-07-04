@@ -60,7 +60,7 @@ The 10 PM checklist:
 1. **Prove the verifier fails.** `bash verify.sh; echo $?` — non-zero, for the right reason. A verifier that already passes means your loop exits at 10:01 and ships nothing.
 2. **Start the session** (Option A for true overnight). Tell it explicitly: run the verifier, push the branch, open a draft PR when green.
 3. **Watch the first iteration.** Two minutes. Catch the immediately-broken loop now, not at breakfast.
-4. **Fill out your loop journal** ([../journal/TEMPLATE.md](../journal/TEMPLATE.md)), post it to the channel.
+4. **Post your loop in the channel** — goal, verifier, cost cap, repo URL.
 5. Close the laptop.
 
 At breakfast:

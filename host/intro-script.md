@@ -31,7 +31,7 @@ Hit enter. The agent starts. **Don't wait for it to finish — that's the point.
 
 **(3:00–4:00) The assignment.**
 
-> "You're working on your own project tonight. Pick one task from it. Write the loop. Write the exit condition. Set it running. The goal is to walk out at 10 with something still going. We check what shipped at breakfast. There's a loop journal template in `journal/TEMPLATE.md` — fill it out before you leave so we know what to look for tomorrow."
+> "You're working on your own project tonight. Pick one task from it. Write the loop. Write the exit condition. Set it running. The goal is to walk out at 10 with something still going. We check what shipped at breakfast. Before you leave, post your loop in the channel — goal, verifier, cost cap, repo URL — so we know what to look for tomorrow."
 
 **(4:00–4:15) Go.**
 

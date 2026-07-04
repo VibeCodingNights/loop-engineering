@@ -17,7 +17,3 @@ Thumbs.db
 node_modules/
 __pycache__/
 *.pyc
-
-# Journal drafts — commit journal/entries/your-name.md, not scratch files
-*.draft.md
-journal/entries/*.tmp

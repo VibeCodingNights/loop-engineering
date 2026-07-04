@@ -7,7 +7,7 @@ You are not presenting. You are triage. Walk the room, watch for stuck faces, an
 - **Float.** Walk the room. Don't stand at the front.
 - **Don't interrupt flow.** If someone has headphones on and is typing, leave them alone.
 - **Do not make announcements during build time.** No "halfway check-in." No "how's everyone doing." Zero interruptions between 6:20 and 9:15.
-- **Near 9:15, do one quiet lap:** "Demos in 15 minutes if you want to show something. No pressure. Also, fill out your loop journal before you leave." Table by table, not from the front.
+- **Near 9:15, do one quiet lap:** "Demos in 15 minutes if you want to show something. No pressure. Also, post your loop in the channel before you leave." Table by table, not from the front.
 
 ## The highest-leverage intervention is verifier review
 
@@ -43,7 +43,7 @@ When someone says "my loop is running," ask to see their verifier. If it's `exit
 │   → Claude Code version: must be ≥ 1.0.34 for /goal
 │
 └── "I finished" (loop is running, verifier works)
-    → "Great. Fill out your loop journal. Then pick another task or help someone else."
+    → "Great. Post your loop in the channel. Then pick another task or help someone else."
 ```
 
 ## Most common issues, in order
@@ -62,6 +62,6 @@ Per demo, ask:
 3. What's your verifier? (This is the interesting part — press on it.)
 4. Is it still running? What do you expect to see at breakfast?
 
-Collect loop journals — anyone who hasn't posted theirs to the channel, remind them now. These are what we check at breakfast (see `breakfast-prompt.md`).
+Sweep the channel — anyone who hasn't posted their loop (goal, verifier, cost cap, repo URL), remind them now. Those posts are what we check at breakfast (see `breakfast-prompt.md`).
 
 Close, 30 seconds: *"Loops are running. Check the channel in the morning. See what shipped. Night."*

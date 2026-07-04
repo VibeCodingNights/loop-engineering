@@ -51,7 +51,7 @@ npx tsc --noEmit
 
 **5. Start the loop** (1 min). Fire it off. Watch the first iteration to make sure it isn't immediately broken. Then work on something else, help a neighbor, or get dinner.
 
-**6. Fill out your loop journal** (5 min before you leave). Copy [journal/TEMPLATE.md](journal/TEMPLATE.md) to `journal/entries/your-name.md`: what you're looping on, what your verifier checks, when you started, your cost cap, your repo URL. Post it in the shared channel. That's what we check at breakfast.
+**6. Post your loop in the channel** (2 min before you leave). One message: what you're looping on, what your verifier checks, when you started, your cost cap, your repo URL. That's what we check at breakfast.
 
 ## Start Here: Advanced
 
@@ -77,7 +77,6 @@ On Codex instead of Claude Code? [patterns/05-codex-goal.md](patterns/05-codex-g
 | [verifiers/](verifiers/) | The real curriculum. Thesis, decision tree, copy-paste templates, anti-patterns, and a cost/time watchdog. |
 | [hypergraph/](hypergraph/) | The full task-hypergraph skill. Advanced path, self-directed. |
 | [safety/](safety/) | Cost caps, kill switches, context rot. Read before running overnight. |
-| [journal/](journal/) | Loop journals — the overnight accountability layer. Fill one out before you leave. |
 | [host/](host/) | Organizer-only. Not for attendees. |
 
 ## What "done" looks like at 10 PM
@@ -85,12 +84,12 @@ On Codex instead of Claude Code? [patterns/05-codex-goal.md](patterns/05-codex-g
 | Level | You leave with |
 |---|---|
 | **Minimum viable** | You understand the difference between a good and bad loop goal. You ran `/loop` or `/goal` at least once on your own project. You saw it iterate. |
-| **Beginner target** | A loop running with a mechanical verifier (a script that exits 0/1). A cost cap set. A loop journal filled out. You understand why the verifier is harder than the loop. |
-| **Advanced target** | A non-trivial verifier — composite, semantic, or cost-aware. Maybe parallel loops or a hypergraph-orchestrated build running. Designed for overnight autonomy, with the design rationale in your journal. |
-| **Night-one target** | A loop still running when you walk out. Your journal posted to the channel. You check what shipped at breakfast. |
+| **Beginner target** | A loop running with a mechanical verifier (a script that exits 0/1). A cost cap set. Your loop posted in the channel. You understand why the verifier is harder than the loop. |
+| **Advanced target** | A non-trivial verifier — composite, semantic, or cost-aware. Maybe parallel loops or a hypergraph-orchestrated build running. Designed for overnight autonomy, with the design rationale in your channel post. |
+| **Night-one target** | A loop still running when you walk out. Your loop posted in the channel. You check what shipped at breakfast. |
 
 ## Breakfast
 
-Post your journal to the shared channel before you leave. In the morning, post what your loop produced, how many iterations it ran, what it cost, and whether your verifier held up. The verifiers that failed overnight are the most interesting data points.
+Post your loop to the shared channel before you leave — goal, verifier, cost cap, repo URL. In the morning, post what your loop produced, how many iterations it ran, what it cost, and whether your verifier held up. The verifiers that failed overnight are the most interesting data points.
 
 We check what shipped at breakfast.

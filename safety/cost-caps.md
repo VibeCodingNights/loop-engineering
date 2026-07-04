@@ -47,6 +47,6 @@ If you're running overnight on a subscription:
 1. Provider cap set (credits capped or spend limit configured).
 2. Loop wrapped in [`watchdog.sh`](../verifiers/watchdog.sh) if it runs on your machine.
 3. `MAX_ITERATIONS` in the loop script.
-4. Cap written into your [loop journal](../journal/TEMPLATE.md) so we know what "over budget" means at breakfast.
+4. Cap posted in the channel with your loop, so we know what "over budget" means at breakfast.
 
 If it runs away anyway: [kill-switches.md](kill-switches.md).
