@@ -90,6 +90,8 @@ references/
   review-personas.md            Review stances: skeptic, brutalist, security, layered.
 ```
 
+One vendored quirk: `references/review-personas.md` tells reviewers to emit verdicts per `../assets/verdict.schema.json`, which doesn't ship. The canonical verdict schema is the inline `VERDICT_SCHEMA` in `assets/workflow.template.js` — use that. The skill is vendored verbatim, so the dangling reference stays.
+
 ## The verifiers are still the game
 
 Nothing about the graph changes the event's core rule. Every node carries a `data-verify` command that exits 0 or non-zero, runs fast, and needs no human judgment. A hypergraph with weak gates is just a faster way to generate plausible-looking code at scale. Pick each node's gate from [`references/gate-menu.md`](references/gate-menu.md) before you write the node.
